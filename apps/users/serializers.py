@@ -1,5 +1,14 @@
-from .models import User
+"""
+Serializer for users app
+
+UserSerializer serializing User model
+"""
+
+# Django Rest Framework
 from rest_framework import serializers
+
+# Users app
+from .models import User
 
 
 class UserSerializer(serializers.ModelSerializer):

@@ -1,4 +1,11 @@
+"""
+Users URL configuration
+"""
+
+# Django
 from django.urls import path
+
+# Users app
 from .views import (
     RegisterView, LoginView, UserView, LogoutView
 )

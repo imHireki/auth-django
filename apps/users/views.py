@@ -1,10 +1,14 @@
-# Rest Framework
+"""
+Views for users app
+"""
+
+# Django Rest Framework
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import exceptions
 from core.settings import SECRET_KEY
 
-# App users
+# Users app
 from .serializers import UserSerializer
 from .models import User
 
@@ -14,6 +18,11 @@ from datetime import datetime, timedelta
 
 
 class RegisterView(APIView):
+    """
+    Get a POST request with the `user's registering data`.
+
+    Return the `user serialized`.
+    """
     def post(self, *args, **kwargs):
         serializer = UserSerializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
@@ -21,6 +30,11 @@ class RegisterView(APIView):
         return Response(serializer.data)
 
 class LoginView(APIView):
+    """
+    Get a POST request with the `user's login data`.
+
+    Return the `user's jwt token`
+    """
     def post(self, *args, **kwargs):
         email = self.request.data['email']
         password = self.request.data['password']
@@ -38,7 +52,6 @@ class LoginView(APIView):
             'exp': datetime.utcnow() + timedelta(minutes=60),
             'iat': datetime.utcnow()
         }
-
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
         response = Response()
@@ -46,7 +59,6 @@ class LoginView(APIView):
         response.set_cookie(
             key='jwt', value=token, httponly=True
         )
-
         response.data = {
             'jwt': token
         }
@@ -54,6 +66,11 @@ class LoginView(APIView):
 
 
 class UserView(APIView):
+    """
+    Get a GET request with the `user's jwt token`.
+
+    Return the `user's serialized and decoded jwt token`
+    """
     def get(self, *args, **kwargs):
         token = self.request.COOKIES.get('jwt')
         if not token:
@@ -70,7 +87,15 @@ class UserView(APIView):
         return Response(serializer.data)
 
 class LogoutView(APIView):
+    """
+    Get a POST request withe the `user's jwt token`
+    
+    Return a `response` with a success message
+    """
     def post(self, *args, **kwargs):
+        token = self.request.COOKIES.get('jwt')
+        if not token: raise exceptions.NotAcceptable
+
         response = Response()
         response.delete_cookie('jwt')
         response.data = {
