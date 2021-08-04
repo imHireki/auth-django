@@ -56,16 +56,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'auth_django',
+#         'USER': 'userdb',
+#         'PASSWORD': 'passworddb',
+#         # 'HOST': 'mysql_db',
+#         'HOST': '127.0.0.1',
+#         'PORT': 3306,
+
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'auth_django',
-        'USER': 'userdb',
-        'PASSWORD': 'passworddb',
-        # 'HOST': 'mysql_db',
-        'HOST': '127.0.0.1',
-        'PORT': 3306,
-
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 

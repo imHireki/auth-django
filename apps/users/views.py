@@ -6,11 +6,11 @@ Views for users app
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import exceptions
-from core.settings import SECRET_KEY
 
-# Users app
+# Apps
 from .serializers import UserSerializer
 from .models import User
+from core.settings import SECRET_KEY
 
 # Packages for JWT
 import jwt
@@ -19,9 +19,9 @@ from datetime import datetime, timedelta
 
 class RegisterView(APIView):
     """
-    Get a POST request with the `user's registering data`.
+    Gets a POST request with the `user's registering data`.
 
-    Return the `user serialized`.
+    Returns the `user serialized`.
     """
     def post(self, *args, **kwargs):
         serializer = UserSerializer(data=self.request.data)
@@ -29,11 +29,12 @@ class RegisterView(APIView):
         serializer.save()
         return Response(serializer.data)
 
+
 class LoginView(APIView):
     """
-    Get a POST request with the `user's login data`.
+    Gets a POST request with the `user's login data`.
 
-    Return the `user's jwt token`
+    Returns the `user's jwt token`
     """
     def post(self, *args, **kwargs):
         email = self.request.data['email']
@@ -67,9 +68,9 @@ class LoginView(APIView):
 
 class UserView(APIView):
     """
-    Get a GET request with the `user's jwt token`.
+    Gets a GET request with the `user's jwt token`.
 
-    Return the `user's serialized and decoded jwt token`
+    Returns the `user's serialized and decoded jwt token`
     """
     def get(self, *args, **kwargs):
         token = self.request.COOKIES.get('jwt')
@@ -86,11 +87,12 @@ class UserView(APIView):
 
         return Response(serializer.data)
 
+
 class LogoutView(APIView):
     """
-    Get a POST request withe the `user's jwt token`
+    Gets a POST request withe the `user's jwt token`
     
-    Return a `response` with a success message
+    Returns a `response` with a success message
     """
     def post(self, *args, **kwargs):
         token = self.request.COOKIES.get('jwt')

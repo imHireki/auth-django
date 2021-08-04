@@ -14,8 +14,11 @@ from .models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'name', 'email', 'password']
-
+        fields = [
+            'id', 'email', 'password', 'name',
+            'phone', 'address', 'date_of_birth'
+        ]
+        
         # To not show the pass when create is called
         extra_kwargs = {
             'password': {'write_only': True}
@@ -26,7 +29,6 @@ class UserSerializer(serializers.ModelSerializer):
         password = validated_data.pop('password', None)
         # validated_data without pass
         instance = self.Meta.model(**self.validated_data)
-
         if password is not None:
             instance.set_password(password)
 
